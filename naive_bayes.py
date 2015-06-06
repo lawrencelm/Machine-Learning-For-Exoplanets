@@ -17,7 +17,7 @@ def load_data(file_name):
 
     return m, N, x, y
 
-#Training through Laplace Estimators
+#Training through Laplace Estimators or MAP
 # lect 24, p. 52
 
 def laplace_estimate(m, N, x, y):
@@ -227,15 +227,15 @@ if __name__ == '__main__' :
 
     prob_x_y, prob_y = mle_estimate(m, N, x, y);
 
-    print prob_x_y
-    print prob_y
+  #  print prob_x_y
+  #  print prob_y
 
     m, N, x, y = load_data(test_file)
 
     #pred_y is an array of predicted values of Y for each vector
     pred_y = bayes_predictor(x, m, N, prob_x_y, prob_y)
 
-    print pred_y
+  #  print pred_y
 
     calculate_accuracy(pred_y, y);
 
@@ -243,15 +243,15 @@ if __name__ == '__main__' :
 
     prob_x_y, prob_y = laplace_estimate(m, N, x, y);
 
-    print prob_x_y
-    print prob_y
+  #  print prob_x_y
+  #  print prob_y
 
     m, N, x, y = load_data(test_file)
 
     #pred_y is an array of predicted values of Y for each vector
     pred_y = bayes_predictor(x, m, N, prob_x_y, prob_y)
 
-    print pred_y
+  #  print pred_y
 
     calculate_accuracy(pred_y, y);
 
