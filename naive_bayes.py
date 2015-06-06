@@ -1,5 +1,24 @@
 import sys
 
+def load_data(file_name):
+
+    data = list(open(file_name, 'r'))
+
+    m = int(data[0]) #number of input variables
+    N = int(data[1]) #number of data vectors
+
+    x = []
+    y = []
+    for vec in data[2:]:
+        instr, outstr = vec.split(':')
+        invec = [int(_) for _ in instr.split()]
+        x.append(invec)
+        y.append(int(outstr))
+
+    return m, N, x, y
+
+#Training
+
 def mle_estimate(m, N, x, y):
 
     # prob_y[0] = P(Y = 0)
@@ -36,24 +55,68 @@ def mle_estimate(m, N, x, y):
         for row in xrange(N):
 
             instance = x[row][col]
-            classY =  y[row]
+            classY = y[row]
             #instances_zero_zero = instances where Xi = 0 and class Y = 0
 
-            if(instance == 0 && classY == 0):
+            if(instance == 0 and classY == 0):
                 instances_zero_zero += 1
-            if(instance == 0 && classY == 1):
+            if(instance == 0 and classY == 1):
                 instances_zero_one += 1
-            if(instance == 1 && classY == 0):
+            if(instance == 1 and classY == 0):
                 instances_one_zero += 1
-            if(instance == 1 && classY == 1):
+            if(instance == 1 and classY == 1):
                 instances_one_one += 1
+
         # N = number of total instances
         # P(Xi = 0, Y = 1) = instances_zero_one/N
         # P(Xi = 0| Y = 1) = P(Xi = 0, Y = 1)/P(Y = 1)
+        # col = number of the column
+
         prob_x_y[col] = [[(instances_zero_zero/N)/prob_y[0],\
                             (instances_zero_one/N)/prob_y[1]],\
                           [(instances_one_zero/N)/prob_y[0], \
                               (instances_one_one/N)/prob_y[1]]]
+
+    return prob_x_y, prob_y
+
+#Classifying
+#lect 14, p. 26
+
+def bayes_predictor(x, m, N, prob_x_y, prob_y):
+
+    pred_y = []
+
+    for x_row in xrange(N):
+
+        # pred_y_one = Y hat for Y = 1
+
+        pred_y_one = 1
+        pred_y_zero = 1
+
+        for x_col in xrange(m):
+            x_value = x[x_row][x_col]
+            pred_y_zero *= prob_x_y[x_col][x_value][0]
+            pred_y_one *= prob_x_y[x_col][x_value][1]
+
+        pred_y_zero *= prob_y[0]
+        pred_y_one *= prob_y[1]
+
+        #y_hat is the value of y that has higher likelihood
+        y_hat = 0 if pred_y_zero > pred_y_one else 1
+
+        pred_y.append(y_hat)
+
+    return pred_y
+
+# pred_y = values of y we predicted
+# y = actual values of y
+
+def calculate_accuracy(pred_y, y):
+    total = 0
+    correct = 0
+    for y_value in y:
+        total+=1
+
 
 
 if __name__ == '__main__' :
@@ -78,4 +141,14 @@ if __name__ == '__main__' :
     #mle_x_probs = P(X|Y)
     #mle_y_probs = P(Y)
 
-    mle_x_probs, mle_y_probs = mle_estimate(m, N, x, y);
+    prob_x_y, prob_y = mle_estimate(m, N, x, y);
+
+    print prob_x_y
+    print prob_y
+
+    m, N, x, y = load_data(test_file)
+
+    #pred_y is an array of predicted values of Y for each vector
+    pred_y = bayes_predictor(x, m, N, prob_x_y, prob_y)
+
+    print pred_y
