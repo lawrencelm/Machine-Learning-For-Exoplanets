@@ -44,8 +44,8 @@ def laplace_estimate(m, N, x, y):
             zero_instances+=1
 
     one_instances = total_instances - zero_instances
-    prob_y.append(float(zero_instances + 2)/total_instances)
-    prob_y.append(float(total_instances - zero_instances + 2)/total_instances) # = 1 - prob_y[0]
+    prob_y.append(float(zero_instances + 1)/(total_instances + 2))
+    prob_y.append(float(total_instances - zero_instances + 1)/(total_instances + 2)) # = 1 - prob_y[0]
 
     for col in xrange(m):
 
