@@ -1,4 +1,3 @@
-import numpy as np
 import sys
 
 def load_data(file_name):
@@ -16,7 +15,7 @@ def load_data(file_name):
         x.append(invec)
         y.append(int(outstr))
         
-    return m, N, np.array(x), np.array(y) 
+    return m, N, x, y 
 
 train_file = sys.argv[1]
 test_file = sys.argv[2]
