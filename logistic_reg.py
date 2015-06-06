@@ -53,7 +53,7 @@ def train_logistic_reg(m, N, x, y, learning_rate):
                 #print "z is %f ; gradient is %f" %(z, gradient[k])
                 gradient[k] += x[i - 1][k]*(y[i - 1] - 1/(1+ exp(-z[i - 1])))
 
-        for k in xrange(m):
+        for k in xrange(m + 1):
             beta[k] += learning_rate*gradient[k]
 
     return beta
@@ -108,7 +108,7 @@ if __name__ == '__main__' :
 
     m, N, x, y = load_data(train_file)
 
-    beta = train_logistic_reg(m, N, x, y, 0.0001)
+    beta = train_logistic_reg(m, N, x, y, 0.0000101)
 
     print beta
 

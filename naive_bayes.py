@@ -225,6 +225,8 @@ if __name__ == '__main__' :
     #mle_x_probs = P(X|Y)
     #mle_y_probs = P(Y)
 
+    print "\nUsing Maximum Likelihood Estimator\n"
+
     prob_x_y, prob_y = mle_estimate(m, N, x, y);
 
   #  print prob_x_y
@@ -240,6 +242,8 @@ if __name__ == '__main__' :
     calculate_accuracy(pred_y, y);
 
     #Now using Laplace Estimators instead of MLE
+
+    print "\nUsing Laplace Estimate\n"
 
     prob_x_y, prob_y = laplace_estimate(m, N, x, y);
 
