@@ -17,9 +17,10 @@ def load_data(file_name):
 
     return m, N, x, y
 
-#Training
+#Training through Laplace Estimators
+# lect 24, p. 52
 
-def mle_estimate(m, N, x, y):
+def laplace_estimate(m, N, x, y):
 
     # prob_y[0] = P(Y = 0)
     # prob_y[1] = P(Y = 1)
@@ -42,7 +43,72 @@ def mle_estimate(m, N, x, y):
         if cl == 0:
             zero_instances+=1
 
-    prob_y.append(float(zero_instances)/total_instances)
+    one_instances = total_instances - zero_instances
+    prob_y.append(float(zero_instances + 2)/total_instances)
+    prob_y.append(float(total_instances - zero_instances + 2)/total_instances) # = 1 - prob_y[0]
+
+    for col in xrange(m):
+
+        instances_zero_zero = 0.0
+        instances_zero_one = 0.0
+        instances_one_zero = 0.0
+        instances_one_one = 0.0
+
+        for row in xrange(N):
+
+            instance = x[row][col]
+            classY = y[row]
+            #instances_zero_zero = instances where Xi = 0 and class Y = 0
+
+            if(instance == 0 and classY == 0):
+                instances_zero_zero += 1
+            if(instance == 0 and classY == 1):
+                instances_zero_one += 1
+            if(instance == 1 and classY == 0):
+                instances_one_zero += 1
+            if(instance == 1 and classY == 1):
+                instances_one_one += 1
+
+        # N = number of total instances
+        # P(Xi = 0, Y = 1) = instances_zero_one/N
+        # prob_x_y[col][0][1] = P(Xi = 0| Y = 1) = P(Xi = 0, Y = 1)/P(Y = 1)
+        # col = number of the column
+
+        prob_x_y[col] = [[(instances_zero_zero + 1)/(zero_instances + 2),\
+                            (instances_zero_one + 1)/(one_instances + 2)],\
+                          [(instances_one_zero + 1)/(zero_instances + 2), \
+                              (instances_one_one + 1)/(one_instances + 2)]]
+
+    return prob_x_y, prob_y
+
+
+
+#Training through Maximum Likelihood Estimators
+
+def mle_estimate(m, N, x, y):
+
+    # prob_y[0] = P(Y = 0)
+    # prob_y[1] = P(Y = 1)
+
+    # prob_x_y[col][0][0] = P(Xi = 0, Y = 0)/P(Y = 0)
+    # prob_x_y[col][1][0] = P(Xi = 1, Y = 0)/P(Y = 0)
+
+    #instance_x_y[n][m] = # of instances where Xi = n and Y = m
+
+    #inst = instances in class 0
+
+    prob_y = []
+    prob_x_y = dict()
+    #instance_x_y = []
+    zero_instances = 0
+    total_instances = N
+
+    for cl in y:
+        # cl = class (0 or 1)
+        if cl == 0:
+            zero_instances+=1
+
+    prob_y.append(float(zero_instances)/(total_instances))
     prob_y.append(float(total_instances - zero_instances)/total_instances) # = 1 - prob_y[0]
 
     for col in xrange(m):
@@ -69,7 +135,7 @@ def mle_estimate(m, N, x, y):
 
         # N = number of total instances
         # P(Xi = 0, Y = 1) = instances_zero_one/N
-        # P(Xi = 0| Y = 1) = P(Xi = 0, Y = 1)/P(Y = 1)
+        # prob_x_y[col][0][1] = P(Xi = 0| Y = 1) = P(Xi = 0, Y = 1)/P(Y = 1)
         # col = number of the column
 
         prob_x_y[col] = [[(instances_zero_zero/N)/prob_y[0],\
@@ -160,6 +226,22 @@ if __name__ == '__main__' :
     #mle_y_probs = P(Y)
 
     prob_x_y, prob_y = mle_estimate(m, N, x, y);
+
+    print prob_x_y
+    print prob_y
+
+    m, N, x, y = load_data(test_file)
+
+    #pred_y is an array of predicted values of Y for each vector
+    pred_y = bayes_predictor(x, m, N, prob_x_y, prob_y)
+
+    print pred_y
+
+    calculate_accuracy(pred_y, y);
+
+    #Now using Laplace Estimators instead of MLE
+
+    prob_x_y, prob_y = laplace_estimate(m, N, x, y);
 
     print prob_x_y
     print prob_y
