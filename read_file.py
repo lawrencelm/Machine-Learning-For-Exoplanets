@@ -17,12 +17,15 @@ def load_data(file_name):
         
     return m, N, x, y 
 
-train_file = sys.argv[1]
-test_file = sys.argv[2]
-    
+print 
+train_file = input("Enter the training file name:")
 m, N, x, y = load_data(train_file)
-
 print m, N
+print x
+print y
 
+test_file = input("Enter the test file name:")
+m, N, x, y = load_data(train_file)
+print m, N
 print x
 print y
