@@ -112,11 +112,29 @@ def bayes_predictor(x, m, N, prob_x_y, prob_y):
 # y = actual values of y
 
 def calculate_accuracy(pred_y, y):
-    total = 0
-    correct = 0
-    for y_value in y:
-        total+=1
+    total_zero = 0
+    total_one = 0
+    correct_zero = 0
+    correct_one = 0
 
+    for i in xrange(len(y)):
+
+        if y[i] == 0:
+            total_zero+=1
+
+        if y[i] == 1:
+            total_one+=1
+
+        if y[i] == pred_y[i]:
+            if y[i] == 0:
+                correct_zero += 1
+            if y[i] == 1:
+                correct_one += 1
+    accuracy = float(correct_zero + correct_one)/(total_zero + total_one)
+
+    print "Class 0: tested %d, correctly classified %d" %(total_zero, correct_zero)
+    print "Class 1: tested %d, correctly classified %d" %(total_one, correct_one)
+    print "Accuracy = %1.2f" %(accuracy)
 
 
 if __name__ == '__main__' :
@@ -152,3 +170,6 @@ if __name__ == '__main__' :
     pred_y = bayes_predictor(x, m, N, prob_x_y, prob_y)
 
     print pred_y
+
+    calculate_accuracy(pred_y, y);
+
