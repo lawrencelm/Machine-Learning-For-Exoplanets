@@ -21,9 +21,10 @@ def load_data(file_name):
     return m, N, x, y
 
 
-def calculate_z(beta, x, m, i, z):
-    for j in xrange(m + 1):
-        z += beta[j]*x[i-1][j]
+def calculate_z(beta, x, m, i):
+    z = sum([beta[j]*x[i - 1][j] for j in xrange(m + 1)])
+    #for j in xrange(m + 1):
+    #    z += beta[j]*x[i-1][j]
     return z
 
 #Training for Logistic Regression
@@ -37,16 +38,20 @@ def train_logistic_reg(m, N, x, y, learning_rate):
 
         gradient = [0]*(m + 1)
 
-        z = 0
+        z = []
+
+        for i in xrange(1,N + 1): # i goes from 1 to N (both included)
+            z.append(calculate_z(beta, x, m, i))
 
         for k in xrange(m + 1):
             for i in xrange(1,N + 1): # i goes from 1 to N (both included)
-                z = calculate_z(beta, x, m, i, z)
+                #  z = calculate_z(beta, x, m, i)
                 #for j in xrange(m + 1):
                 #    z += beta[j]*x[i-1][j]
 
                # exp(-z) = e^(-z)
-                gradient[k] += x[i - 1][k]*(y[i - 1] - 1/(1+ exp(-z)))
+                #print "z is %f ; gradient is %f" %(z, gradient[k])
+                gradient[k] += x[i - 1][k]*(y[i - 1] - 1/(1+ exp(-z[i - 1])))
 
         for k in xrange(m):
             beta[k] += learning_rate*gradient[k]
@@ -58,8 +63,7 @@ def train_logistic_reg(m, N, x, y, learning_rate):
 def classifier_logistic_reg(beta, x, m, N):
     pred_y = []
     for x_row in xrange(1, N + 1): #goes from 1 to N (both included)
-        z = 0
-        z = calculate_z(beta, x, m, x_row, z)
+        z = calculate_z(beta, x, m, x_row)
         # p = P(Y = 1|X)
         p = 1/(1+exp(-z))
 
