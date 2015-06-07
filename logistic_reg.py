@@ -108,7 +108,7 @@ if __name__ == '__main__' :
 
     m, N, x, y = load_data(train_file)
 
-    beta = train_logistic_reg(m, N, x, y, 0.0000101)
+    beta = train_logistic_reg(m, N, x, y, 0.00002)
 
     print beta
 
