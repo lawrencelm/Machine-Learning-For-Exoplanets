@@ -34,7 +34,6 @@ def laplace_estimate(m, N, x, y):
 
     prob_y = []
     prob_x_y = dict()
-    #instance_x_y = []
     zero_instances = 0
     total_instances = N
 
@@ -48,8 +47,6 @@ def laplace_estimate(m, N, x, y):
     prob_y.append(float(one_instances + 1)/(total_instances + 2)) # = 1 - prob_y[0]
 
     for col in xrange(m):
-
-
 
         instances_zero_zero = 0.0
         instances_zero_one = 0.0
@@ -101,7 +98,6 @@ def mle_estimate(m, N, x, y):
 
     prob_y = []
     prob_x_y = dict()
-    #instance_x_y = []
     zero_instances = 0
     total_instances = N
 
