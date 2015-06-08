@@ -110,12 +110,8 @@ if __name__ == '__main__' :
 
     beta = train_logistic_reg(m, N, x, y, 0.00002)
 
-    print beta
-
     m, N, x, y = load_data(test_file)
 
     pred_y = classifier_logistic_reg(beta, x, m, N)
-
-    print pred_y
 
     calculate_accuracy(pred_y, y)

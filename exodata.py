@@ -2,7 +2,8 @@
 
 import numpy as np
 
-
+#This produces a correctly formatted textfile that can be passed to
+#the machine learning routines.
 def datatofile(xdata, y, name):
     m = len(xdata[0])
     N = len(y)
