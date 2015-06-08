@@ -16,9 +16,10 @@ if __name__ =='__main__':
     n = 3 #No of planetary properties
     earth_temp = 288
     earth_density = 5.51
-    temp_index = (1-abs((exodata['temp'][sel] - earth_temp)))**(5.58/3)
-    print temp_index
-    radius_index = (1-(exodata['radius'][sel]-1)/(exodata['radius'][sel]+1))**(0.57/3)
-    density_index = (1-(exodata['density'][sel] - earth_density)/(exodata['density'][sel] + earth_density))**(1.07/3)
-
-    esi = temp_index * radius_index * density_index
+    temp_index = (1-abs((exodata['temp'][sel] - earth_temp)/(exodata['temp'][sel] + earth_temp)))**(5.58/3)
+    radius_index = (1-abs((exodata['radius'][sel]-1)/(exodata['radius'][sel]+1)))**(0.57/3)
+    density_index = (1-abs((exodata['density'][sel] - earth_density)/(exodata['density'][sel] + earth_density)))**(1.07/3)
+    esi_i = (radius_index * density_index)**0.5
+    esi_s= 1
+    
+    print esi
