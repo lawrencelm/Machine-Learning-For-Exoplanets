@@ -80,7 +80,7 @@ def laplace_estimate(m, N, x, y):
                             (instances_zero_one + 1)/(one_instances + 2)],\
                           [(instances_one_zero + 1)/(zero_instances + 2), \
                               (instances_one_one + 1)/(one_instances + 2)]]
-        print (instances_one_one + 1)/(one_instances + 2)
+        #print (instances_one_one + 1)/(one_instances + 2)
     return prob_x_y, prob_y
 
 
@@ -126,13 +126,13 @@ def mle_estimate(m, N, x, y):
             classY = y[row]
             #instances_zero_zero = instances where Xi = 0 and class Y = 0
 
-            if(instance == 0 and classY == 0):
+            if(instance == 0):# and classY == 0):
                 instances_zero_zero += 1
-            if(instance == 0 and classY == 1):
+            if(instance == 0):# and classY == 1):
                 instances_zero_one += 1
-            if(instance == 1 and classY == 0):
+            if(instance == 1):# and classY == 0):
                 instances_one_zero += 1
-            if(instance == 1 and classY == 1):
+            if(instance == 1):# and classY == 1):
                 instances_one_one += 1
 
         # N = number of total instances
@@ -244,6 +244,8 @@ if __name__ == '__main__' :
     calculate_accuracy(pred_y, y);
 
     #Now using Laplace Estimators instead of MLE
+
+    m, N, x, y = load_data(train_file)
 
     print "\nUsing Laplace Estimate\n"
 
